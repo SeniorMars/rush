@@ -4,9 +4,11 @@ Shell written in C
 
 # Possible features to implement:
 - Color
+- Arbitrary length input / `;``
 - `<C-c>` signal handler
 	- `<c-z>` - suspend
 - Command-line history
+- [username@hostname cwd]
 - globbing
 
 # Features we failed at implementing:
