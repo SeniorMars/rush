@@ -2,7 +2,7 @@
 .PHONY: run clean
 CC= gcc
 CFLAGS= -g -Wall -Wextra -Wpedantic -Wuninitialized -Wundef -Wcast-align -Wstrict-overflow=2 -Wwrite-strings -Wno-format-nonliteral
-BINARY=main
+BINARY=rush
 OBJECTS= main.o
 LFLAGS= -lasan
 
