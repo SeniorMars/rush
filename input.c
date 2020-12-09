@@ -8,17 +8,15 @@
 
 char *read_line()
 {
-    printf(">>> ");
-    fflush(stdout);
     int size = DEFAULT_BUFFER_SIZE;
     char *str;
-    str = (char *)malloc(size * sizeof(char));
+    str = (char *)calloc(size, sizeof(char));
     char c;
     c = getchar();
     int i = 0;
     while (c != '\n')
     {
-        if (i > size)
+        if (i >= size)
         {
             size = size * 2;
             str = (char *)realloc(str, size);
@@ -27,6 +25,6 @@ char *read_line()
         c = getchar();
         ++i;
     }
-    str[i]='\0';
+    str[i] = '\0';
     return str;
 }
