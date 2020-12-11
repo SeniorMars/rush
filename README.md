@@ -4,7 +4,8 @@ Shell written in C
 
 # Possible features to implement:
 - Color
-- Arbitrary length input / `;``
+- Arbitrary length input
+- Unlimited Piping
 - `<C-c>` signal handler
 	- `<c-z>` - suspend
 - Command-line history
