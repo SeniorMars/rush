@@ -35,29 +35,29 @@ char *read_line()
   return str;
 }
 
-char *args[DEFAULT_BUFFER_SIZE]; // DEFAULT_BUFFER_SIZE represents number of arguments size
-char **parse_args(char *line)
+/*
+ * char **parse_args(char *line, char* to_split);
+ * *line -> Reference to the string containing the entire line.
+ * *to_split -> The delimiter to split the line by
+ * Returns:
+ * **args -> A list of the split strings
+*/
+char **parse_args(char *line, const char *to_split)
 {
-  // dynamic allocate buffer size
   //
-  /* char **args = 0; */
-  /* int args = 0, cmd = 0; */
-  /* char *p = line; */
-  /* while (*p) { */
-  /*   if (*p == ' ') { */
-  /*     args++; */
-  /*   } else if (*p == ';') { */
-  /*     cmd++; */
-  /*   } */
-  /* } */
-  // dynamic allocate buffer size is a problem
-  for (int i = 0; line; i++)
+  /* Count the number of resulting strings after the split */
+  char *p = line;
+  int count = 1;
+  for (int i = 0; i < (int)strlen(line); ++i)
   {
-    // I think we should perhaps try to separate by ";" first and
-    // call the this same function. Like recursively.
-    // We would have to allocate enough space for the array arcs
-    args[i] = strsep(&line, " ");
-    /* printf("%s\n", args[i]); */
+    if (line[i] == *to_split)
+      ++count;
+  }
+  char **args = calloc(count + 1, sizeof(char *));
+  args[count] = NULL;
+  for (int i = 0; p; i++)
+  {
+    args[i] = strsep(&p, to_split);
   }
   return args;
 }
@@ -65,7 +65,6 @@ char **parse_args(char *line)
 void exec(char **args)
 {
   int c, status;
-  printf("Initial msg to check\n");
 
   c = fork();
   if (!c)
@@ -75,7 +74,6 @@ void exec(char **args)
   else
   {
     wait(&status);
-    printf("Command executed\n");
   }
 }
 
@@ -128,16 +126,26 @@ int main()
     /* int len = strlen(line); */
     if (strlen(line) > 0)
     {
-      char **args = parse_args(line);
-      if (strcmp(args[0], "exit") == 0)
+      char **cmds = parse_args(line, ";");
+      char **p = cmds;
+      for (char *command = *p; command; command = *++p)
       {
-        printf("exiting...\n");
-        break;
+        char **args = parse_args(command, " ");
+        if (strcmp(args[0], "exit") == 0)
+        {
+          printf("exiting...\n");
+          free(line);
+          free(args);
+          free(cmds);
+          goto end;
+        }
+        exec(args);
+        free(args);
       }
-
-      exec(args);
+      free(cmds);
     }
     free(line);
   }
+end:
   return 0;
 }
