@@ -1,6 +1,5 @@
 #ifndef RUSH
 #define RUSH
-
-/* char* gretting(); */
+/* char* prompt(); */
 
 #endif /* ifndef RUSH */
