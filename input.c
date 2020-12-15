@@ -1,5 +1,4 @@
 #include "input.h"
-#include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -35,9 +34,7 @@ char *read_line() {
 char *args[DEFAULT_BUFFER_SIZE]; // DEFAULT_BUFFER_SIZE represents number of
                                  // arugments size
 char **parse_args(char *line) {
-<<<<<<< Updated upstream
   // dynamic allocate buffer size
-=======
   //
   /* char **args = 0; */
   /* int args = 0, cmd = 0; */
@@ -50,7 +47,6 @@ char **parse_args(char *line) {
   /*   } */
   /* } */
   // dynamic allocate buffer size is a problem
->>>>>>> Stashed changes
   for (int i = 0; line; i++) {
     // I think we should perhaps try to separate by ";" first and
     // call the this same function. Like recursively.
@@ -114,9 +110,9 @@ int main() {
   // all the below should be in a while loop. Unless when we parse line it's
   // "quit"
   char *line = read_line();
-  int commands = 1, arguments = 1; // start at one because there will always be
-                                   // one command ad one argument
-  int *cmdp = &commands, *argsp = &arguments;
+  /* int commands = 1, arguments = 1; // start at one because there will always be */
+  /*                                  // one command ad one argument */
+  /* int *cmdp = &commands, *argsp = &arguments; */
   /* count(cmdp, argsp, line); // gets number of arguments and commands */
   /* char arr[*argsp]; */
   /* for (int i = 0; i < (int)strlen(arr); i++) { */
