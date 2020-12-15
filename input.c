@@ -62,19 +62,24 @@ char **parse_args(char *line, const char *to_split)
   return args;
 }
 
-void exec(char **args)
+int exec(char **args)
 {
   int c, status;
 
   c = fork();
   if (!c)
   {
-    execvp(args[0], args);
+    int rc= execvp(args[0], args);
+    if(rc==-1){
+      printf("Unknown command\n");
+      exit(0);
+    }
   }
   else
   {
     wait(&status);
   }
+  return 0;
 }
 
 void count(int *cmds, int *args, char *line)
