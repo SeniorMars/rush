@@ -65,7 +65,7 @@ char **parse_args(char *line)
 void exec(char **args)
 {
   int c, status;
-  printf("Initial msg to check\n");
+  printf("---Initial msg to check---\n");
 
   c = fork();
   if (!c)
@@ -75,7 +75,7 @@ void exec(char **args)
   else
   {
     wait(&status);
-    printf("Command executed\n");
+    printf("---Command executed---\n");
   }
 }
 
@@ -97,7 +97,27 @@ void count(int *cmds, int *args, char *line)
 // prompt for our program
 int prompt()
 {
+  char user[PATH_MAX + 1];
+  char host[PATH_MAX + 1];
   char cwd[PATH_MAX + 1];
+  if (cuserid(user) != '\0')
+  {
+    printf("%s", user);
+  }
+  else
+  {
+    perror("cuserid error");
+    return 1;
+  }
+  if (gethostname(host, sizeof(host)) != -1)
+  {
+    printf("@%s:", host);
+  }
+  else
+  {
+    perror("gethosename error");
+    return 1;
+  }
   if (getcwd(cwd, sizeof(cwd)) != NULL)
   {
     printf("%s>> ", cwd);
@@ -106,7 +126,7 @@ int prompt()
   {
     perror("getcwd() error");
     return 1;
-  }
+  }  
   return 0;
 }
 
