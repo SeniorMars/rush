@@ -35,6 +35,16 @@ char *read_line()
   return str;
 }
 
+char *trim(char *string)
+{
+  char *end = string + strlen(string);
+  while (isspace(*string))
+    string++;
+  while(isspace(*--end));
+  *(end+1)='\0';
+  return string;
+}
+
 /*
  * char **parse_args(char *line, char* to_split);
  * *line -> Reference to the string containing the entire line.
@@ -57,7 +67,7 @@ char **parse_args(char *line, const char *to_split)
   args[count] = NULL;
   for (int i = 0; p; i++)
   {
-    args[i] = strsep(&p, to_split);
+    args[i] = trim(strsep(&p, to_split));
   }
   return args;
 }
@@ -69,8 +79,9 @@ int exec(char **args)
   c = fork();
   if (!c)
   {
-    int rc= execvp(args[0], args);
-    if(rc==-1){
+    int rc = execvp(args[0], args);
+    if (rc == -1)
+    {
       printf("Unknown command\n");
       exit(0);
     }
@@ -129,7 +140,7 @@ int prompt()
   {
     perror("getcwd() error");
     return 1;
-  }  
+  }
   return 0;
 }
 
