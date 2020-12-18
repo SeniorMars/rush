@@ -3,17 +3,20 @@
 CC= gcc
 CFLAGS= -g -Wall -Wextra -Wpedantic -Wuninitialized -Wundef -Wcast-align -Wstrict-overflow=2 -Wwrite-strings -Wno-format-nonliteral
 BINARY=rush
-OBJECTS= input.o
+OBJECTS= rush.o input.o utils.o
 LFLAGS= -lasan
 
 $(BINARY): $(OBJECTS)
 	$(CC) -o $(BINARY) $(OBJECTS) $(LFLAGS)
 
-# rush.o: rush.c input.h
-# 	$(CC) $(CFLAGS) -c rush.c
+rush.o: rush.c input.h
+	$(CC) $(CFLAGS) -c rush.c
 
-input.o: input.c input.h
+input.o: input.c input.h utils.h
 	$(CC) $(CFLAGS) -c input.c
+
+utils.o: utils.c utils.h
+	$(CC) $(CFLAGS) -c utils.c
 
 run: $(BINARY)
 	./$(BINARY)
