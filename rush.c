@@ -7,11 +7,23 @@
 #include <unistd.h>
 #include <errno.h>
 #include <linux/limits.h>
+#include <signal.h>
 
 char last_working_dir[PATH_MAX + 1];
 
+void sighandler(int signo)
+{
+    if (signo == SIGINT)
+    {
+        printf("\n");
+        prompt();
+        fflush(stdout);
+    }
+}
+
 int main()
 {
+    signal(SIGINT, sighandler);
     char *home = getenv("HOME");
     getcwd(last_working_dir, sizeof(last_working_dir));
     while (1)
@@ -30,7 +42,7 @@ int main()
                 //Count number of args
                 int arglen = 0;
                 char **p2 = args;
-                for (char* c = *p2; c; c = *++p2)
+                for (char *c = *p2; c; c = *++p2)
                 {
                     ++arglen;
                 }

@@ -6,6 +6,17 @@
 #include <unistd.h>
 #include <linux/limits.h>
 #include <ctype.h>
+
+//Colors
+#define RED "\x1B[31m"
+#define GRN "\x1B[32m"
+#define YEL "\x1B[33m"
+#define BLU "\x1B[34m"
+#define MAG "\x1B[35m"
+#define CYN "\x1B[36m"
+#define WHT "\x1B[37m"
+#define RESET "\x1B[0m"
+
 char *trim(char *string)
 {
     char *end = string + strlen(string);
@@ -25,7 +36,7 @@ int prompt()
     char cwd[PATH_MAX + 1];
     if (cuserid(user) != '\0')
     {
-        printf("%s", user);
+        printf(GRN "%s", user);
     }
     else
     {
@@ -43,7 +54,7 @@ int prompt()
     }
     if (getcwd(cwd, sizeof(cwd)) != NULL)
     {
-        printf("%s>> ", cwd);
+        printf(BLU "%s" RESET "$ ", cwd);
     }
     else
     {
