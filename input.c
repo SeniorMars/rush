@@ -42,12 +42,7 @@ char **parse_args(char *line, const char *to_split)
   //
   /* Count the number of resulting strings after the split */
   char *p = line;
-  int count = 1;
-  for (int i = 0; i < (int)strlen(line); ++i)
-  {
-    if (line[i] == *to_split)
-      ++count;
-  }
+  int count = count_characters(line,to_split)+1;
   char **args = calloc(count + 1, sizeof(char *));
   args[count] = NULL;
   for (int i = 0; p; i++)
@@ -76,19 +71,4 @@ int exec(char **args)
     wait(&status);
   }
   return 0;
-}
-
-void count(int *cmds, int *args, char *line)
-{
-  for (int i = 0; i < (int)strlen(line); i++)
-  {
-    if (line[i] == ' ')
-    {
-      (*args)++;
-    }
-    if (line[i] == ';')
-    {
-      (*cmds)++;
-    }
-  }
 }

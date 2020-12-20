@@ -38,7 +38,7 @@ int prompt()
     }
     else
     {
-        perror("gethosename error");
+        perror("gethostname error");
         return 1;
     }
     if (getcwd(cwd, sizeof(cwd)) != NULL)
@@ -51,4 +51,29 @@ int prompt()
         return 1;
     }
     return 0;
+}
+
+void count_commands(int *cmds, int *args, char *line)
+{
+    for (int i = 0; i < (int)strlen(line); i++)
+    {
+        if (line[i] == ' ')
+        {
+            (*args)++;
+        }
+        if (line[i] == ';')
+        {
+            (*cmds)++;
+        }
+    }
+}
+int count_characters(char *str, const char *to_split)
+{
+    int count = 0;
+    for (int i = 0; i < (int)strlen(str); ++i)
+    {
+        if (str[i] == *to_split)
+            ++count;
+    }
+    return count;
 }
