@@ -3,9 +3,11 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <unistd.h>
 #include <linux/limits.h>
 #include <ctype.h>
+#include <fcntl.h>
 
 //Colors
 #define RED "\x1B[31m"
@@ -36,7 +38,7 @@ int prompt()
     char cwd[PATH_MAX + 1];
     if (cuserid(user) != '\0')
     {
-        printf(GRN "%s", user);
+        printf(YEL "%s", user);
     }
     else
     {
@@ -54,7 +56,7 @@ int prompt()
     }
     if (getcwd(cwd, sizeof(cwd)) != NULL)
     {
-        printf(BLU "%s" RESET "$ ", cwd);
+        printf(CYN "%s" RESET "$ ", cwd);
     }
     else
     {
@@ -87,4 +89,47 @@ int count_characters(char *str, const char *to_split)
             ++count;
     }
     return count;
+}
+
+int exec(char **args)
+{
+  int c, status;
+
+  c = fork();
+  if (!c)
+  {
+    int rc = execvp(args[0], args);
+    if (rc == -1)
+    {
+      printf("Unknown command\n");
+      exit(0);
+    }
+  }
+  else
+  {
+    wait(&status);
+  }
+  return 0;
+}
+
+int exec_callback(char** args, void (*callback)()){
+    int rc = exec(args);
+    (*callback)();
+    return rc;
+}
+int stdout_dup;
+//Restores stdout from the stdout_dup variable.
+void restore_stdout(){
+    dup2(stdout_dup,STDOUT_FILENO);
+    close(stdout_dup);
+}
+
+void redir(char **parts, char **args)
+{
+  int fd1;
+  stdout_dup = dup(STDOUT_FILENO);
+  fd1 = open(parts[1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
+  dup2(fd1, STDOUT_FILENO); //redirects stdout to fd1
+  close(fd1);
+  exec_callback(args,restore_stdout);
 }

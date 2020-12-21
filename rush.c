@@ -55,6 +55,7 @@ int main()
                     free(line);
                     free(args);
                     free(cmds);
+                    free(temp);
                     goto end;
                 }
                 //Builtin cd function
@@ -92,17 +93,9 @@ int main()
                 }
                 else if (count_characters(temp, ">"))
                 {
-                    // printf("%d\n", count_characters(temp, ">"));
-                    // printf("%s\n", args[2]);
-                    //int i = 0;
-                    /*
-                    while (args[i])
-                    {
-                        printf("%s\n", args[i]);
-                        i++;
-                    }
-                    */
-                    redir(args, args[2]); //reminder that this is hardcoded fix later
+                    printf("redir\n");
+                    char** parts = parse_args(temp,">");
+                    redir(parts,parse_args(parts[0]," "));
                 }
                 else
                 {

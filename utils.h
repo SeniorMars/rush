@@ -8,6 +8,7 @@ int prompt();
 int count_characters(char* str, const char* to_split);
 //
 void count_commands(int *cmds, int *args, char *line);
-
-void redir(char **args, char *file);
+int exec_callback(char** args, void (*callback)());
+int exec(char **args);
+void redir(char **parts, char **args);
 #endif

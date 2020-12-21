@@ -4,5 +4,4 @@
 char *read_line();
 // parses from line
 char **parse_args(char *line, const char *to_split);
-int exec(char **args);
 #endif
