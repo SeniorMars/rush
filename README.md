@@ -1,6 +1,6 @@
 # rush
 Shell written in C
-> By Eisuke Hirota, Amit Prasad, and Karl Hernandez
+> By Eisuke Hirota, Amit Prasad, and Karl Hernandez  
 > TNPG: Team Rush
 
 # Features
@@ -8,7 +8,7 @@ Shell written in C
 - `;` will separate blocks of commands.
 	- `ls; echo hello` will work as expected.
 - Piping using `|`, redirection of stdin and stdout (using `<` and `>` respectively).
-	- Limited to 1 redirection within a block of commands.
+	- Limited to 1 redirection/pipe within a block of commands.
 	- `ls > test1 > test2` will only output to `test1`.
 	- `ls > test1; echo hello > test2` will work for both `test1`, and `test2`.
 - Robust `cd` command.
@@ -175,4 +175,12 @@ void redir_in(char **parts, char **args);
  * Restores STDIN from a saved stream.
 */
 void restore_stdin();
+
+/* void pipe_cmd(char **parts) 
+ * Creates a pipe between two commands in **parts
+ *
+ * Parameters:
+ * char **parts -> An array which contains commands separated by pipes
+*/
+void pipe_cmd(char **parts);
 ```
