@@ -1,5 +1,5 @@
-#ifndef INPUT
-#define INPUT
+#ifndef INPUT_H
+#define INPUT_H
 
 /* char *read_line()
  * Returns the next line of input from STDIN, length independent.
