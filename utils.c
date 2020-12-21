@@ -8,6 +8,7 @@
 #include <linux/limits.h>
 #include <ctype.h>
 #include <fcntl.h>
+#include <errno.h>
 
 //Colors
 #define RED "\x1B[31m"
@@ -93,45 +94,75 @@ int count_characters(char *str, const char *to_split)
 
 int exec(char **args)
 {
-  int c, status;
+    int c, status;
 
-  c = fork();
-  if (!c)
-  {
-    int rc = execvp(args[0], args);
-    if (rc == -1)
+    c = fork();
+    if (!c)
     {
-      printf("Unknown command\n");
-      exit(0);
+        int rc = execvp(args[0], args);
+        if (rc == -1)
+        {
+            printf("Unknown command\n");
+            exit(0);
+        }
     }
-  }
-  else
-  {
-    wait(&status);
-  }
-  return 0;
+    else
+    {
+        wait(&status);
+    }
+    return 0;
 }
 
-int exec_callback(char** args, void (*callback)()){
+int exec_callback(char **args, void (*callback)())
+{
     int rc = exec(args);
     (*callback)();
     return rc;
 }
 int stdout_dup;
 //Restores stdout from the stdout_dup variable.
-void restore_stdout(){
-    dup2(stdout_dup,STDOUT_FILENO);
+void restore_stdout()
+{
+    dup2(stdout_dup, STDOUT_FILENO);
     close(stdout_dup);
 }
 
-void redir(char **parts, char **args)
+void redir_out(char **parts, char **args)
 {
-  int fd1;
-  stdout_dup = dup(STDOUT_FILENO);
-  fd1 = open(parts[1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
-  dup2(fd1, STDOUT_FILENO); //redirects stdout to fd1
-  close(fd1);
-  exec_callback(args,restore_stdout);
-  free(parts);
-  free(args);
+    int fd1;
+    fd1 = open(parts[1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
+    stdout_dup = dup(STDOUT_FILENO);
+    dup2(fd1, STDOUT_FILENO); //redirects stdout to fd1
+    close(fd1);
+    exec_callback(args, restore_stdout);
+    free(parts);
+    free(args);
+}
+
+int stdin_dup;
+//Restores stdout from the stdout_dup variable.
+void restore_stdin()
+{
+    dup2(stdin_dup, STDIN_FILENO);
+    close(stdin_dup);
+}
+
+void redir_in(char **parts, char **args)
+{
+    int fd1;
+    fd1 = open(parts[1], O_RDONLY, 0644);
+    printf("%d\n", fd1);
+    if (fd1 == -1)
+    {
+        printf("Error: %s\n", strerror(errno));
+        free(parts);
+        free(args);
+        return;
+    }
+    stdin_dup = dup(STDIN_FILENO);
+    dup2(fd1, STDIN_FILENO); //redirects stdout to fd1
+    close(fd1);
+    exec_callback(args, restore_stdin);
+    free(parts);
+    free(args);
 }

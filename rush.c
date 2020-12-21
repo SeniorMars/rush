@@ -93,8 +93,13 @@ int main()
                 }
                 else if (count_characters(temp, ">"))
                 {
-                    char** parts = parse_args(temp,">");
-                    redir(parts,parse_args(parts[0]," "));
+                    char **parts = parse_args(temp, ">");
+                    redir_out(parts, parse_args(parts[0], " "));
+                }
+                else if (count_characters(temp, "<"))
+                {
+                    char **parts = parse_args(temp, "<");
+                    redir_in(parts, parse_args(parts[0], " "));
                 }
                 else
                 {
