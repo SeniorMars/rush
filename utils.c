@@ -132,4 +132,6 @@ void redir(char **parts, char **args)
   dup2(fd1, STDOUT_FILENO); //redirects stdout to fd1
   close(fd1);
   exec_callback(args,restore_stdout);
+  free(parts);
+  free(args);
 }

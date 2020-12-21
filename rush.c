@@ -93,7 +93,6 @@ int main()
                 }
                 else if (count_characters(temp, ">"))
                 {
-                    printf("redir\n");
                     char** parts = parse_args(temp,">");
                     redir(parts,parse_args(parts[0]," "));
                 }
