@@ -28,6 +28,11 @@ char *trim(char *string)
     return string;
 }
 
+void greet(){
+    printf(RED "\n _____  _    _  _____ _    _ \n|  __ \\| |  | |/ ____| |  | |\n| |__) | |  | | (___ | |__| |\n|  _  /| |  | |\\___ \\|  __  |\n| | \\ \\| |__| |____) | |  | |\n|_|  \\_\\\\____/|_____/|_|  |_|\n" RESET);
+    printf("\nEisuke Hirota, Amit Prasad, Karl Hernandez\n\nRun \"exit\" to terminate.\n");
+}
+
 // prompt for our program
 int prompt()
 {

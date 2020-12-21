@@ -21,6 +21,11 @@ char *trim(char *string);
 */
 char *expand_tilde(char *str, char* home);
 
+/* void greet()
+ * Prints the greeting to STDOUT.
+*/
+void greet();
+
 /* int prompt()
  * Prints the command prompt to STDOUT.
  * NOTE: This string must be freed to prevent a memory leak.

@@ -23,6 +23,7 @@ void sighandler(int signo)
 
 int main()
 {
+    greet();
     signal(SIGINT, sighandler);
     char *home = getenv("HOME");
     getcwd(last_working_dir, sizeof(last_working_dir));
