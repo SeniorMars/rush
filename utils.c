@@ -166,3 +166,31 @@ void redir_in(char **parts, char **args)
     free(parts);
     free(args);
 }
+
+char *expand_tilde(char *str, char* home)
+{
+    if(count_characters(str,"~")==0){
+        return str;
+    }
+    char* dirstr = calloc(sizeof(char),PATH_MAX+1);
+    int i = 0, j = 0;
+    while (1)
+    {
+        if (str[j] == '~')
+        {
+            strcat(dirstr, home);
+            i += strlen(home);
+        }
+        else
+        {
+            dirstr[i] = str[j];
+            ++i;
+        }
+        if (str[j] == '\0')
+        {
+            break;
+        }
+        ++j;
+    }
+    return dirstr;
+}

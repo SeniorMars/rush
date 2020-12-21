@@ -1,4 +1,3 @@
-#include "rush.h"
 #include "input.h"
 #include "utils.h"
 #include <stdio.h>
@@ -38,6 +37,9 @@ int main()
             char **p = cmds;
             for (char *command = *p; command; command = *++p)
             {
+                //If any expansion takes place, we need to free the command pointer
+                int do_free = count_characters(command, "~");
+                command = expand_tilde(command, home);
                 char *temp = malloc(sizeof(char) * (strlen(command) + 1));
                 strcpy(temp, command);
                 char **args = parse_args(command, " ");
@@ -52,10 +54,15 @@ int main()
                 if (strcmp(args[0], "exit") == 0)
                 {
                     printf("exiting...\n");
+                    //Free everything that needs to be freed immediately.
                     free(line);
                     free(args);
                     free(cmds);
                     free(temp);
+                    if (do_free)
+                    {
+                        free(command);
+                    }
                     goto end;
                 }
                 //Builtin cd function
@@ -79,6 +86,7 @@ int main()
                         }
                         else
                         {
+
                             rc = chdir(target_dir);
                         }
                     }
@@ -107,6 +115,11 @@ int main()
                 }
                 free(args);
                 free(temp);
+
+                if (do_free)
+                {
+                    free(command);
+                }
             }
             free(cmds);
         }
