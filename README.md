@@ -1,6 +1,6 @@
 # rush
 Shell written in C
-> By Eisuke Hirota, Amit Prasad, and Karl Hernandez  
+> By Eisuke Hirota, Amit Prasad, and Karl Hernandez
 > TNPG: Team Rush
 
 # Features
@@ -26,6 +26,7 @@ Shell written in C
 
 # Bugs / Report / More Failures / Specifications
 - `make run` will cause a `cuserid()` implicit declaration warning, but *not always,* and with *no negative effects*.
+- With our current implementation `tr a-z A-Z < wholist > foo` does not work. Since we are parsing `<` and `>` separately.
 
 # Files & Function Signatures
 ### rush.c
@@ -49,7 +50,7 @@ void sighandler(int signo);
 /* char *read_line()
  * Returns the next line of input from STDIN, length independent.
  * NOTE: This string must be freed to prevent a memory leak.
- * 
+ *
  * Parameters: None
  * Returns:
  * char *line -> A reference to a dynamically allocated string.
@@ -58,7 +59,7 @@ char *read_line();
 
 /* char **split_string(char *str, char* to_split)
  * Splits a string on every instance of the delimiter in *to_split
- * 
+ *
  * Parameters:
  * char *str -> Reference to the string to be split.
  * char *to_split -> The delimiter to split the str by
@@ -72,7 +73,7 @@ char **split_string(char *str, const char *to_split);
 ```c
 /* char *trim(char *string)
  * Removes all leading and trailing whitespace from a string.
- * 
+ *
  * Parameters:
  * char *string -> The input string.
  * Returns:
@@ -82,7 +83,7 @@ char *trim(char *string);
 
 /* char *expand_tilde(char *str, char* home)
  * Expands any ~ in a string to the home directory path specified in char* home.
- * 
+ *
  * Parameters:
  * char *str -> The reference string.
  * char *home -> The home directory path.
@@ -99,7 +100,7 @@ void greet();
 /* int prompt()
  * Prints the command prompt to STDOUT.
  * NOTE: This string must be freed to prevent a memory leak.
- * 
+ *
  * Parameters: None
  * Returns:
  * 0 -> Successful
@@ -109,7 +110,7 @@ int prompt();
 
 /* int count_characters(char* str, const char* to_count)
  * Counts the number of *to_count in *str
- * 
+ *
  * Parameters:
  * char *str -> The reference string.
  * char *to_count -> The character to count
@@ -120,7 +121,7 @@ int count_characters(char* str, const char* to_count);
 
 /* void count_commands(int *cmds, int *args, char *line
  * Counts the number of commands and arguments in *line, stored in *cmds and *args respectively.
- * 
+ *
  * Parameters:
  * int *cmds -> The command counter reference.
  * int *args -> The argument counter reference.
@@ -133,7 +134,7 @@ void count_commands(int *cmds, int *args, char *line);
 ```c
 /* void exec(char **args)
  * Forks, and runs the command stored in the **args array.
- * 
+ *
  * Parameters:
  * char **args -> The array of strings that represent the command to be run.
 */
@@ -141,7 +142,7 @@ void exec(char **args);
 
 /* void exec_callback(char** args, void (*callback)())
  * Wrapper for exec(char** args). Runs the callback void() function in *callback.
- * 
+ *
  * Parameters:
  * char **args -> The array of strings that represent the command to be run.
  * void (*callback)() -> a void() function that is run after the exec completes.
@@ -150,7 +151,7 @@ void exec_callback(char** args, void (*callback)());
 
 /* redir_out(char **parts, char **args)
  * Redirects the STDOUT of the command stored in **args (and in **parts[0]) to the file specified in **parts[1]
- * 
+ *
  * Parameters:
  * char **[arts] -> An array which has the command to be run, followed by the file where STDOUT is redirected to.
  * char **args -> An array which will be passed on to exec_callback
@@ -164,7 +165,7 @@ void restore_stdout();
 
 /* redir_in(char **parts, char **args)
  * Redirects the STDIN of the command stored in **args (and in **parts[0]) from a file specified in **parts[1]
- * 
+ *
  * Parameters:
  * char **[arts] -> An array which has the command to be run, followed by the file where STDIN is redirected from.
  * char **args -> An array which will be passed on to exec_callback
@@ -176,7 +177,7 @@ void redir_in(char **parts, char **args);
 */
 void restore_stdin();
 
-/* void pipe_cmd(char **parts) 
+/* void pipe_cmd(char **parts)
  * Creates a pipe between two commands in **parts
  *
  * Parameters:
