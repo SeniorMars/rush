@@ -1,3 +1,4 @@
+#include "input.h"
 #include "commandhandler.h"
 #include "utils.h"
 #include <stdio.h>
@@ -107,4 +108,29 @@ char *expand_tilde(char *str, char *home)
         ++j;
     }
     return dirstr;
+}
+void pipe_cmd(char **parts) {
+  /* FILE *file = popen(parts[0], "r"); */
+  /* pclose(file); */
+  /* free(parts); */
+  int status;
+  int f = fork();
+  if (!f) {
+    int pipe_fd[2];
+    pipe(pipe_fd);
+    int f2 = fork();
+    if (!f2) {
+      dup2(pipe_fd[1], 1);
+      close(pipe_fd[0]);
+      char **args = split_string(parts[0], " ");
+      execvp(args[0], args);
+    } else {
+      dup2(pipe_fd[0], 0);
+      close(pipe_fd[1]);
+      char **args = split_string(parts[1], " ");
+      execvp(args[0], args);
+    }
+  } else {
+    wait(&status);
+  }
 }

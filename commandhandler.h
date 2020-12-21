@@ -45,4 +45,12 @@ void redir_in(char **parts, char **args);
  * Restores STDIN from a saved stream.
 */
 void restore_stdin();
+
+/* void pipe_cmd(char **parts) 
+ * Creates a pipe between two commands in **parts
+ *
+ * Parameters:
+ * char **parts -> An array which contains commands separated by pipes
+*/
+void pipe_cmd(char **parts);
 #endif
