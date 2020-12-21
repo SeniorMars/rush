@@ -11,7 +11,7 @@ char *read_line()
 {
   int size = DEFAULT_BUFFER_SIZE;
   char *str;
-  str = (char *)calloc(size+1, sizeof(char));
+  str = (char *)calloc(size + 1, sizeof(char));
   char c;
   c = getchar();
   int i = 0;
@@ -31,19 +31,11 @@ char *read_line()
   return str;
 }
 
-/*
- * char **parse_args(char *line, char* to_split);
- * *line -> Reference to the string containing the entire line.
- * *to_split -> The delimiter to split the line by
- * Returns:
- * **args -> A list of the split strings
-*/
-char **parse_args(char *line, const char *to_split)
+char **split_string(char *str, const char *to_split)
 {
-  //
   /* Count the number of resulting strings after the split */
-  char *p = line;
-  int count = count_characters(line, to_split) + 1;
+  char *p = str;
+  int count = count_characters(str, to_split) + 1;
   char **args = calloc(count + 1, sizeof(char *));
   args[count] = NULL;
   for (int i = 0; p; i++)

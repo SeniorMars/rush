@@ -33,7 +33,7 @@ int main()
         if (strlen(line) > 0)
         {
             //List of commands, separated by ;
-            char **cmds = parse_args(line, ";");
+            char **cmds = split_string(line, ";");
             char **p = cmds;
             for (char *command = *p; command; command = *++p)
             {
@@ -42,7 +42,7 @@ int main()
                 command = expand_tilde(command, home);
                 char *temp = malloc(sizeof(char) * (strlen(command) + 1));
                 strcpy(temp, command);
-                char **args = parse_args(command, " ");
+                char **args = split_string(command, " ");
                 //Count number of args
                 int arglen = 0;
                 char **p2 = args;
@@ -101,13 +101,13 @@ int main()
                 }
                 else if (count_characters(temp, ">"))
                 {
-                    char **parts = parse_args(temp, ">");
-                    redir_out(parts, parse_args(parts[0], " "));
+                    char **parts = split_string(temp, ">");
+                    redir_out(parts, split_string(parts[0], " "));
                 }
                 else if (count_characters(temp, "<"))
                 {
-                    char **parts = parse_args(temp, "<");
-                    redir_in(parts, parse_args(parts[0], " "));
+                    char **parts = split_string(temp, "<");
+                    redir_in(parts, split_string(parts[0], " "));
                 }
                 else
                 {

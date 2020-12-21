@@ -81,21 +81,20 @@ void count_commands(int *cmds, int *args, char *line)
         }
     }
 }
-int count_characters(char *str, const char *to_split)
+int count_characters(char *str, const char *to_count)
 {
     int count = 0;
     for (int i = 0; i < (int)strlen(str); ++i)
     {
-        if (str[i] == *to_split)
+        if (str[i] == *to_count)
             ++count;
     }
     return count;
 }
 
-int exec(char **args)
+void exec(char **args)
 {
     int c, status;
-
     c = fork();
     if (!c)
     {
@@ -110,14 +109,12 @@ int exec(char **args)
     {
         wait(&status);
     }
-    return 0;
 }
 
-int exec_callback(char **args, void (*callback)())
+void exec_callback(char **args, void (*callback)())
 {
-    int rc = exec(args);
+    exec(args);
     (*callback)();
-    return rc;
 }
 int stdout_dup;
 //Restores stdout from the stdout_dup variable.
@@ -167,12 +164,14 @@ void redir_in(char **parts, char **args)
     free(args);
 }
 
-char *expand_tilde(char *str, char* home)
+char *expand_tilde(char *str, char *home)
 {
-    if(count_characters(str,"~")==0){
+    int instances = count_characters(str, "~");
+    if (instances == 0)
+    {
         return str;
     }
-    char* dirstr = calloc(sizeof(char),PATH_MAX+1);
+    char *dirstr = calloc(sizeof(char), strlen(str) + (instances * strlen(home)) + 1);
     int i = 0, j = 0;
     while (1)
     {
