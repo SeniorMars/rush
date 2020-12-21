@@ -38,6 +38,8 @@ int main()
             char **p = cmds;
             for (char *command = *p; command; command = *++p)
             {
+                char *temp = malloc(sizeof(char) * (strlen(command) + 1));
+                strcpy(temp, command);
                 char **args = parse_args(command, " ");
                 //Count number of args
                 int arglen = 0;
@@ -88,11 +90,26 @@ int main()
                         strcpy(last_working_dir, temp);
                     }
                 }
+                else if (count_characters(temp, ">"))
+                {
+                    // printf("%d\n", count_characters(temp, ">"));
+                    // printf("%s\n", args[2]);
+                    //int i = 0;
+                    /*
+                    while (args[i])
+                    {
+                        printf("%s\n", args[i]);
+                        i++;
+                    }
+                    */
+                    redir(args, args[2]); //reminder that this is hardcoded fix later
+                }
                 else
                 {
                     exec(args);
                 }
                 free(args);
+                free(temp);
             }
             free(cmds);
         }

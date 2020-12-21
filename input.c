@@ -5,6 +5,8 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <sys/types.h>
 #define DEFAULT_BUFFER_SIZE 10
 
 char *read_line()
@@ -71,4 +73,39 @@ int exec(char **args)
     wait(&status);
   }
   return 0;
+
+}
+
+void redir(char **args, char *file)
+{
+  int fd1;
+  // int out_backup;
+  //int f, status;
+
+  //out_backup = dup(STDOUT_FILENO); //dupes stdout
+  fd1 = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+
+  dup2(fd1, STDOUT_FILENO); //redirects fd1 to stdout
+  close(fd1);
+
+  char *arg = args[0];
+  execlp(arg, arg, NULL);
+
+  //char *temp[2];
+  //strcpy(temp[0], args[0]);
+  //exec(temp);
+  /*
+  f = fork();
+  if (!f)
+  {
+    execlp(arg, arg, NULL);
+  }
+  else
+  {
+    wait(&status);
+    printf("should be in terminal\n");
+  }
+  */
+  //return 0;
+  
 }

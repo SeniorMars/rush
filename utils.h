@@ -8,4 +8,6 @@ int prompt();
 int count_characters(char* str, const char* to_split);
 //
 void count_commands(int *cmds, int *args, char *line);
+
+void redir(char **args, char *file);
 #endif
