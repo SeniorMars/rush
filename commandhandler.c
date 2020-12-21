@@ -132,5 +132,6 @@ void pipe_cmd(char **parts) {
     }
   } else {
     wait(&status);
+    free(parts);
   }
 }
