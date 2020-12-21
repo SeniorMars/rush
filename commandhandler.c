@@ -64,7 +64,6 @@ void redir_in(char **parts, char **args)
 {
     int fd1;
     fd1 = open(parts[1], O_RDONLY, 0644);
-    printf("%d\n", fd1);
     if (fd1 == -1)
     {
         printf("Error: %s\n", strerror(errno));
