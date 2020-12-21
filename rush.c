@@ -1,5 +1,6 @@
 #include "input.h"
 #include "utils.h"
+#include "commandhandler.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
